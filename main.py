@@ -1,6 +1,11 @@
 import gradio as gr
 from app import get_answer, get_character_prompt, get_characters, get_languages
 
+def respond(message, chat_history):
+        chat_history.append({"role": "user", "content": message})
+        response = get_answer(chat_history)
+        chat_history.append({"role": "assistant", "content": response})
+        return response
 
 with gr.Blocks() as demo:
     with gr.Row():
@@ -17,16 +22,9 @@ with gr.Blocks() as demo:
                 chatbot = gr.Chatbot(
                     get_character_prompt("William Shakespeare", "English"), type="messages"
                 )
-                msg = gr.Textbox()
-                clear = gr.ClearButton([msg, chatbot])
+                gr.ChatInterface(fn=respond, chatbot=chatbot, type="messages", retry_btn=None, undo_btn=None, clear_btn=None)
 
-    def respond(message, chat_history):
-        chat_history.append({"role": "user", "content": message})
-        response = get_answer(chat_history)
-        chat_history.append({"role": "assistant", "content": response})
-        return "", chat_history
-
-    msg.submit(respond, [msg, chatbot], [msg, chatbot])
+    
     character_dropdown.input(
         get_character_prompt,
         inputs=[character_dropdown, language_dropdown],
