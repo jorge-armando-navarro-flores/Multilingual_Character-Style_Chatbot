@@ -2,17 +2,21 @@ import gradio as gr
 from app import set_chain, respond, get_characters, get_languages
 
 
+start_character = get_characters()[0]
+start_language = get_languages()[0]
+set_chain(start_character, start_language)
+
 with gr.Blocks() as demo:
     with gr.Row():
         with gr.Column(scale=1):
             character_dropdown = gr.Dropdown(
                 label="Character Selection",
-                value=get_characters()[0],
+                value=start_character,
                 choices=get_characters(),
             )
             language_dropdown = gr.Dropdown(
                 label="langauge Selection",
-                value=get_languages()[0],
+                value=start_language,
                 choices=get_languages(),
             )
         with gr.Column(scale=3):
