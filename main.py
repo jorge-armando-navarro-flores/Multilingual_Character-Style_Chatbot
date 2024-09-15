@@ -1,5 +1,5 @@
 import gradio as gr
-from app import set_chain, respond, get_characters, get_languages
+from app import respond, get_characters, get_languages
 
 
 with gr.Blocks() as demo:
@@ -20,12 +20,10 @@ with gr.Blocks() as demo:
             gr.ChatInterface(
                 fn=respond,
                 chatbot=chatbot,
+                additional_inputs=[character_dropdown, language_dropdown],
                 type="messages",
             )
 
-    character_dropdown.input(set_chain, inputs=[character_dropdown, language_dropdown], outputs=[chatbot])
-
-    language_dropdown.input(set_chain, inputs=[character_dropdown, language_dropdown], outputs=[chatbot])
 
 if __name__ == "__main__":
     demo.launch(server_name="0.0.0.0", server_port=7860)

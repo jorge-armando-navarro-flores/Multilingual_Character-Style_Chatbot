@@ -1,21 +1,12 @@
-from chains import Chain
+from chains import multilingual_character_chain
 from options import characters, languages
 
-chain = Chain(characters[0], languages[0])
 
-
-def set_chain(character, language):
-    chain.set_multilingual_character_chain(character, language)
-
-
-def get_answer(messages):
-    response = chain.get_chain().invoke({"messages": messages})
-    return response
-
-
-def respond(message, chat_history):
+def respond(message, chat_history, character, language):
     chat_history.append({"role": "user", "content": message})
-    response = get_answer(chat_history)
+    response = multilingual_character_chain.invoke(
+        {"messages": chat_history, "character": character, "language": language}
+    )
     chat_history.append({"role": "assistant", "content": response})
 
     return response
